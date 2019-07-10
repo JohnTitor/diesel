@@ -77,7 +77,7 @@ impl<DB: TypeMetadata> Output<'static, Vec<u8>, DB> {
     pub fn test() -> Self {
         use std::mem;
         #[allow(clippy::invalid_ref)]
-        Self::new(Vec::new(), unsafe { mem::MaybeUninit::uninit() })
+        Self::new(Vec::new(), unsafe { mem::MaybeUninit::uninit().assume_init() })
     }
 }
 
