@@ -31,7 +31,7 @@ macro_rules! mysql_time_impls {
                 let bytes = not_none!(bytes);
                 let bytes_ptr = bytes.as_ptr() as *const ffi::MYSQL_TIME;
                 unsafe {
-                    let mut result = mem::uninitialized();
+                    let mut result = mem::MaybeUninit::uninit();
                     ptr::copy_nonoverlapping(bytes_ptr, &mut result, 1);
                     if result.neg == 0 {
                         Ok(result)
