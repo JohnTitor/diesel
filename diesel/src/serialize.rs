@@ -76,11 +76,11 @@ impl<DB: TypeMetadata> Output<'static, Vec<u8>, DB> {
     /// Unsafe to use for testing types which perform dynamic metadata lookup.
     pub fn test() -> Self {
         use std::mem;
-        // Allowing `deprecated` here because we are ok with using `mem::uninitialized`
-        // here. (Yes it's UB, but that won't be fixed by using `mem::MaybeUninit`
-        // but hey it's only for test code …)
-        #[allow(clippy::invalid_ref, deprecated)]
-        Self::new(Vec::new(), unsafe { mem::uninitialized() })
+        // Allows UB concern here because this is test code.
+        #[allow(clippy::invalid_ref)]
+        Self::new(Vec::new(), unsafe {
+            mem::MaybeUninit::uninit().assume_init()
+        })
     }
 }
 
